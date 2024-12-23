@@ -1,7 +1,7 @@
 import { useEffect } from 'react'; 
 import { useSelector, useDispatch } from 'react-redux';
 import { setNotes, deleteNote } from '../redux/notesSlice';
-import axios from 'axios';
+import api from '../config/axiosConfig'; // Importamos la configuración de Axios
 import { Link } from 'react-router-dom';
 import {
   Typography,
@@ -20,7 +20,7 @@ const NotesList = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/notes');
+        const response = await api.get('/notes'); // Usamos la configuración de Axios
         dispatch(setNotes(response.data.notes)); 
       } catch (error) {
         console.error('Error fetching notes:', error);
@@ -32,7 +32,7 @@ const NotesList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/delete/${id}`);
+      await api.delete(`/delete/${id}`); // Usamos la configuración de Axios
       dispatch(deleteNote(id)); 
     } catch (error) {
       console.error('Error al eliminar la nota:', error);
@@ -82,8 +82,7 @@ const NotesList = () => {
                 <Typography variant="body1" color="text.secondary">
                   {note.description}
                 </Typography>
-                 {}
-                 <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
                   <Button
                     component={Link}
                     to={`/edit/${note._id}`}

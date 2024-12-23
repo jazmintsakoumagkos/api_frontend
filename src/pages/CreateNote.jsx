@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { TextField, Button, Container, Typography, Box, Paper } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { addNote } from '../redux/notesSlice';
-import axios from 'axios';
+import api from '../config/axiosConfig'; // Importamos la configuración de Axios
 import { useNavigate } from 'react-router-dom';
 
 const CreateNote = () => {
@@ -14,9 +14,8 @@ const CreateNote = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await axios.post('http://localhost:3000/api/save', { title, description });
+        const response = await api.post('/save', { title, description }); // Usamos la instancia de Axios
 
-     
         if (response.data?.note) {
             dispatch(addNote(response.data.note)); 
         } else {
@@ -27,8 +26,7 @@ const CreateNote = () => {
     } catch (error) {
         console.error('Error creando la nota:', error);
     }
-};
-
+  };
 
   return (
     <Container maxWidth="sm">

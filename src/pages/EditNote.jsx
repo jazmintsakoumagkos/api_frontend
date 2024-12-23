@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'; 
 import { useDispatch } from 'react-redux';
 import { updateNote } from '../redux/notesSlice';
-import axios from 'axios';
+import api from '../config/axiosConfig'; // Importamos la configuración de Axios
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Typography,
@@ -21,7 +21,7 @@ const EditNote = () => {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/notes/${id}`);
+        const response = await api.get(`/notes/${id}`); // Usamos la configuración de Axios
         setTitle(response.data.title);
         setDescription(response.data.description);
       } catch (error) {
@@ -34,7 +34,7 @@ const EditNote = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:3000/api/update/${id}`, { title, description });
+      const response = await api.put(`/update/${id}`, { title, description }); // Usamos la configuración de Axios
       dispatch(updateNote(response.data));
       navigate('/');
     } catch (error) {
